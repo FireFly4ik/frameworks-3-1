@@ -1,1 +1,114 @@
-[]
+{
+  "gift_list": {
+    "id": 1,
+    "name": "Подарки для семьи и друзей"
+  },
+  "recipients": [
+    {
+      "id": 1,
+      "name": "Анна Петрова"
+    },
+    {
+      "id": 2,
+      "name": "Иван Соколов"
+    },
+    {
+      "id": 3,
+      "name": "Мария Волкова"
+    },
+    {
+      "id": 4,
+      "name": "Алексей Орлов"
+    }
+  ],
+  "occasions": [
+    {
+      "id": 1,
+      "name": "День рождения",
+      "event_date": "2026-11-15",
+      "recipient_id": 1
+    },
+    {
+      "id": 2,
+      "name": "Новый год",
+      "event_date": "2026-12-31",
+      "recipient_id": 2
+    },
+    {
+      "id": 3,
+      "name": "Годовщина",
+      "event_date": "2027-02-14",
+      "recipient_id": 3
+    },
+    {
+      "id": 4,
+      "name": "Новоселье",
+      "event_date": "2026-10-20",
+      "recipient_id": 4
+    },
+    {
+      "id": 5,
+      "name": "День рождения",
+      "event_date": "2027-03-08",
+      "recipient_id": 3
+    }
+  ],
+  "gifts": [
+    {
+      "id": 1,
+      "name": "Книга «Мастер и Маргарита»",
+      "price": 1800,
+      "occasion_id": 1,
+      "purchased": false
+    },
+    {
+      "id": 2,
+      "name": "Сертификат в книжный магазин",
+      "price": 3000,
+      "occasion_id": 1,
+      "purchased": true
+    },
+    {
+      "id": 3,
+      "name": "Беспроводные наушники",
+      "price": 6500,
+      "occasion_id": 2,
+      "purchased": false
+    },
+    {
+      "id": 4,
+      "name": "Термокружка",
+      "price": 2200,
+      "occasion_id": 2,
+      "purchased": true
+    },
+    {
+      "id": 5,
+      "name": "Фотоальбом ручной работы",
+      "price": 2800,
+      "occasion_id": 3,
+      "purchased": false
+    },
+    {
+      "id": 6,
+      "name": "Набор посуды",
+      "price": 7200,
+      "occasion_id": 4,
+      "purchased": false
+    },
+    {
+      "id": 7,
+      "name": "Комнатное растение",
+      "price": 1900,
+      "occasion_id": 4,
+      "purchased": true
+    },
+    {
+      "id": 8,
+      "name": "Билеты в театр",
+      "price": 5600,
+      "occasion_id": 5,
+      "purchased": false
+    }
+  ]
+}
