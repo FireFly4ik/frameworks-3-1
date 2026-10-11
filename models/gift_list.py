@@ -151,6 +151,24 @@ class GiftList:
                 return True
         return False
 
+    def find_gift_by_id(self, gift_id: int) -> Gift | None:
+        """Найти подарок по идентификатору."""
+        return next((gift for gift in self._gifts if gift.id == gift_id), None)
+
+    def find_recipient_by_id(self, recipient_id: int) -> Recipient | None:
+        """Найти получателя по идентификатору."""
+        return next(
+            (item for item in self.recipients if item.id == recipient_id),
+            None,
+        )
+
+    def find_occasion_by_id(self, occasion_id: int) -> Occasion | None:
+        """Найти событие по идентификатору."""
+        return next(
+            (item for item in self.occasions if item.id == occasion_id),
+            None,
+        )
+
     def statistics(self) -> tuple[int, int, int]:
         """Вернуть количество, число покупок и общую стоимость."""
         purchased = sum(gift.purchased for gift in self._gifts)
