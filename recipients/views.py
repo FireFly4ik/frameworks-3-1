@@ -1,32 +1,33 @@
-"""Представления списка и карточки получателя."""
+"""Представления получателей на данных SQLite."""
 
+from contextlib import closing
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from giftservice.data import load_project_data
+from db.database import get_connection
 
 
 def recipient_list(request: HttpRequest) -> HttpResponse:
-    """Показать получателей и сводные данные об их подарках."""
-    gift_list = load_project_data()
-    recipient_cards: list[dict[str, object]] = []
-    for recipient in gift_list.recipients:
-        gifts = [
-            gift
-            for gift in gift_list
-            if gift.occasion.recipient.id == recipient.id
-        ]
-        recipient_cards.append(
-            {
-                "recipient": recipient,
-                "gift_count": len(gifts),
-                "total_price": sum(gift.price for gift in gifts),
-            }
-        )
+    """Показать получателей с агрегатами SQL."""
+    with closing(get_connection()) as connection:
+        recipients = connection.execute(
+            """
+            SELECT
+                recipients.id,
+                recipients.name,
+                COUNT(gifts.id) AS gift_count,
+                COALESCE(SUM(gifts.price), 0) AS total_price
+            FROM recipients
+            LEFT JOIN occasions ON occasions.recipient_id = recipients.id
+            LEFT JOIN gifts ON gifts.occasion_id = occasions.id
+            GROUP BY recipients.id, recipients.name
+            ORDER BY recipients.name
+            """
+        ).fetchall()
     return render(
         request,
         "recipients/recipient_list.html",
-        {"recipient_cards": recipient_cards},
+        {"recipients": recipients},
     )
 
 
@@ -34,18 +35,29 @@ def recipient_detail(
     request: HttpRequest,
     recipient_id: int,
 ) -> HttpResponse:
-    """Показать получателя и связанные с ним подарки."""
-    gift_list = load_project_data()
-    recipient = gift_list.find_recipient_by_id(recipient_id)
-    gifts = (
-        [
-            gift
-            for gift in gift_list
-            if gift.occasion.recipient.id == recipient_id
-        ]
-        if recipient is not None
-        else []
-    )
+    """Показать получателя и его подарки из связанных таблиц."""
+    with closing(get_connection()) as connection:
+        recipient = connection.execute(
+            "SELECT id, name FROM recipients WHERE id = ?",
+            (recipient_id,),
+        ).fetchone()
+        gifts = connection.execute(
+            """
+            SELECT
+                gifts.id,
+                gifts.name,
+                gifts.price,
+                gifts.purchased,
+                occasions.id AS occasion_id,
+                occasions.name AS occasion_name,
+                occasions.event_date
+            FROM gifts
+            JOIN occasions ON occasions.id = gifts.occasion_id
+            WHERE occasions.recipient_id = ?
+            ORDER BY occasions.event_date, gifts.name
+            """,
+            (recipient_id,),
+        ).fetchall()
     return render(
         request,
         "recipients/recipient_detail.html",

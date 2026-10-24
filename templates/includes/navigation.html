@@ -1,12 +1,16 @@
 <nav class="site-navigation" aria-label="Основная навигация">
     <a
-        class="nav-link{% if request.resolver_match.app_name == 'homepage' %} active{% endif %}"
+        class="nav-link{% if request.resolver_match.app_name == 'homepage' and request.resolver_match.url_name == 'index' %} active{% endif %}"
         href="{% url 'homepage:index' %}"
     >Главная</a>
     <a
-        class="nav-link{% if request.resolver_match.app_name == 'gifts' %} active{% endif %}"
+        class="nav-link{% if request.resolver_match.app_name == 'gifts' and request.resolver_match.url_name != 'affordable' %} active{% endif %}"
         href="{% url 'gifts:list' %}"
     >Подарки</a>
+    <a
+        class="nav-link{% if request.resolver_match.url_name == 'affordable' %} active{% endif %}"
+        href="{% url 'gifts:affordable' %}"
+    >По бюджету</a>
     <a
         class="nav-link{% if request.resolver_match.app_name == 'recipients' %} active{% endif %}"
         href="{% url 'recipients:list' %}"
@@ -15,4 +19,8 @@
         class="nav-link{% if request.resolver_match.app_name == 'occasions' %} active{% endif %}"
         href="{% url 'occasions:list' %}"
     >События</a>
+    <a
+        class="nav-link{% if request.resolver_match.url_name == 'statistics' %} active{% endif %}"
+        href="{% url 'homepage:statistics' %}"
+    >Статистика</a>
 </nav>

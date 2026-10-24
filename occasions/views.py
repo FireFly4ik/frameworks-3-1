@@ -1,17 +1,28 @@
-"""Представления списка и карточки события."""
+"""Представления событий на данных SQLite."""
 
+from contextlib import closing
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from giftservice.data import load_project_data
+from db.database import get_connection
 
 
 def occasion_list(request: HttpRequest) -> HttpResponse:
-    """Показать события в хронологическом порядке."""
-    occasions = sorted(
-        load_project_data().occasions,
-        key=lambda occasion: occasion.event_date,
-    )
+    """Показать события и получателей посредством JOIN."""
+    with closing(get_connection()) as connection:
+        occasions = connection.execute(
+            """
+            SELECT
+                occasions.id,
+                occasions.name,
+                occasions.event_date,
+                recipients.id AS recipient_id,
+                recipients.name AS recipient_name
+            FROM occasions
+            JOIN recipients ON recipients.id = occasions.recipient_id
+            ORDER BY occasions.event_date
+            """
+        ).fetchall()
     return render(
         request,
         "occasions/occasion_list.html",
@@ -23,14 +34,31 @@ def occasion_detail(
     request: HttpRequest,
     occasion_id: int,
 ) -> HttpResponse:
-    """Показать событие и связанные подарки."""
-    gift_list = load_project_data()
-    occasion = gift_list.find_occasion_by_id(occasion_id)
-    gifts = (
-        [gift for gift in gift_list if gift.occasion.id == occasion_id]
-        if occasion is not None
-        else []
-    )
+    """Показать событие и его подарки из SQLite."""
+    with closing(get_connection()) as connection:
+        occasion = connection.execute(
+            """
+            SELECT
+                occasions.id,
+                occasions.name,
+                occasions.event_date,
+                recipients.id AS recipient_id,
+                recipients.name AS recipient_name
+            FROM occasions
+            JOIN recipients ON recipients.id = occasions.recipient_id
+            WHERE occasions.id = ?
+            """,
+            (occasion_id,),
+        ).fetchone()
+        gifts = connection.execute(
+            """
+            SELECT id, name, price, purchased
+            FROM gifts
+            WHERE occasion_id = ?
+            ORDER BY price, name
+            """,
+            (occasion_id,),
+        ).fetchall()
     return render(
         request,
         "occasions/occasion_detail.html",

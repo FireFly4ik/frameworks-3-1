@@ -4,15 +4,13 @@
 
 {% block content %}
 <div class="section-heading">
-    <div>
-        <span class="eyebrow">Адресаты</span>
+    <div><span class="eyebrow">SQL: LEFT JOIN и GROUP BY</span>
         <h1>Получатели</h1>
-        <p class="text-secondary mb-0">Люди, для которых запланированы подарки.</p>
-    </div>
-    <span class="count-badge">Всего: {{ recipient_cards|length }}</span>
+        <p class="text-secondary mb-0">Люди, для которых запланированы подарки.</p></div>
+    <span class="count-badge">Всего: {{ recipients|length }}</span>
 </div>
 <div class="row g-3">
-    {% for card in recipient_cards %}
+    {% for recipient in recipients %}
         {% include "recipients/includes/recipient_card.html" %}
     {% empty %}
         <div class="col-12"><div class="empty-state">Получатели не найдены.</div></div>

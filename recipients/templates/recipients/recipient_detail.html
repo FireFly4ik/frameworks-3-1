@@ -6,37 +6,25 @@
 
 {% block content %}
 {% if recipient %}
-    <div class="section-heading">
-        <div>
-            <span class="eyebrow">Получатель #{{ recipient.id }}</span>
-            <h1>{{ recipient.name|default:"Без имени" }}</h1>
-        </div>
-        <span class="count-badge">Подарков: {{ gifts|length }}</span>
-    </div>
-    <div class="table-responsive content-card">
-        <table class="table table-hover align-middle mb-0">
-            <thead><tr><th>Подарок</th><th>Событие</th><th>Цена</th><th>Статус</th></tr></thead>
-            <tbody>
-            {% for gift in gifts %}
-                <tr>
-                    <td><a href="{% url 'gifts:detail' gift.id %}">{{ gift.name }}</a></td>
-                    <td><a href="{% url 'occasions:detail' gift.occasion.id %}">
-                        {{ gift.occasion.name }}
-                    </a></td>
-                    <td>{{ gift.price }} ₽</td>
-                    <td>{% include "gifts/includes/gift_status.html" %}</td>
-                </tr>
-            {% empty %}
-                <tr><td colspan="4" class="text-center py-4">Подарки не найдены.</td></tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <div class="section-heading"><div><span class="eyebrow">Получатель #{{ recipient.id }}</span>
+        <h1>{{ recipient.name|default:"Без имени" }}</h1></div>
+        <span class="count-badge">Подарков: {{ gifts|length }}</span></div>
+    <div class="table-responsive content-card"><table class="table table-hover align-middle mb-0">
+        <thead><tr><th>Подарок</th><th>Событие</th><th>Цена</th><th>Статус</th></tr></thead>
+        <tbody>
+        {% for gift in gifts %}
+            <tr><td><a href="{% url 'gifts:detail' gift.id %}">{{ gift.name }}</a></td>
+                <td><a href="{% url 'occasions:detail' gift.occasion_id %}">
+                    {{ gift.occasion_name }}
+                </a></td><td>{{ gift.price }} ₽</td>
+                <td>{% include "gifts/includes/gift_status.html" %}</td></tr>
+        {% empty %}
+            <tr><td colspan="4" class="text-center py-4">Подарки не найдены.</td></tr>
+        {% endfor %}
+        </tbody></table></div>
 {% else %}
-    <section class="empty-state">
-        <h1 class="text-danger">Получатель не найден</h1>
-        <p>Получателя с таким идентификатором нет в списке.</p>
-    </section>
+    <section class="empty-state"><h1 class="text-danger">Получатель не найден</h1>
+        <p>Получателя с таким идентификатором нет в базе.</p></section>
 {% endif %}
 <a href="{% url 'recipients:list' %}" class="btn btn-outline-secondary mt-3">
     ← К получателям

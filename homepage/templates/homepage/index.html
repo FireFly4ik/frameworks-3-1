@@ -5,66 +5,42 @@
 {% block content %}
 <section class="hero rounded-4 p-4 p-md-5 mb-4">
     <div class="hero-copy">
-        <span class="eyebrow">Личный помощник для праздников</span>
+        <span class="eyebrow">Данные из SQLite</span>
         <h1 class="display-5 fw-bold">{{ gift_list.name|default:"Список подарков" }}</h1>
-        <p class="lead mb-4">
-            Планируйте подарки, события и бюджет в одном месте.
-        </p>
-        <a href="{% url 'gifts:list' %}" class="btn btn-light me-2">
-            Открыть подарки
-        </a>
-        <a href="{% url 'recipients:list' %}" class="btn btn-outline-light">
-            Получатели
+        <p class="lead mb-4">Планируйте подарки, события и бюджет в одном месте.</p>
+        <a href="{% url 'gifts:list' %}" class="btn btn-light me-2">Открыть подарки</a>
+        <a href="{% url 'gifts:affordable' %}" class="btn btn-outline-light">
+            Подобрать по бюджету
         </a>
     </div>
 </section>
-
 <section class="row g-3 mb-5" aria-label="Статистика списка подарков">
-    <div class="col-6 col-lg-3">
-        <div class="card stat-card h-100"><div class="card-body">
-            <div class="stat-value">{{ total }}</div><div>всего подарков</div>
-        </div></div>
-    </div>
-    <div class="col-6 col-lg-3">
-        <div class="card stat-card h-100"><div class="card-body">
-            <div class="stat-value">{{ purchased }}</div><div>уже куплено</div>
-        </div></div>
-    </div>
-    <div class="col-6 col-lg-3">
-        <div class="card stat-card h-100"><div class="card-body">
-            <div class="stat-value">{{ planned }}</div><div>запланировано</div>
-        </div></div>
-    </div>
-    <div class="col-6 col-lg-3">
-        <div class="card stat-card h-100"><div class="card-body">
-            <div class="stat-value">{{ total_price }}</div><div>рублей всего</div>
-        </div></div>
-    </div>
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ total }}</div><div>всего подарков</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ purchased }}</div><div>уже куплено</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ planned }}</div><div>запланировано</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ total_price }}</div><div>рублей всего</div>
+    </div></div></div>
 </section>
-
 <section aria-labelledby="upcoming-title">
     <div class="section-heading">
-        <div>
-            <span class="eyebrow">Не забыть</span>
-            <h2 id="upcoming-title" class="h3">Ближайшие события</h2>
-        </div>
-        <a href="{% url 'occasions:list' %}" class="btn btn-outline-primary">
-            Все события
-        </a>
+        <div><span class="eyebrow">JOIN и ORDER BY</span>
+            <h2 id="upcoming-title" class="h3">Ближайшие события</h2></div>
+        <a href="{% url 'occasions:list' %}" class="btn btn-outline-primary">Все события</a>
     </div>
     <div class="list-group shadow-sm">
         {% for occasion in upcoming_occasions %}
-            <a
-                class="list-group-item list-group-item-action event-row"
-                href="{% url 'occasions:detail' occasion.id %}"
-            >
-                <span>
-                    <strong>{{ occasion.name|default:"Без названия" }}</strong>
-                    <small>{{ occasion.recipient.name }}</small>
-                </span>
-                <time datetime="{{ occasion.event_date|date:'Y-m-d' }}">
-                    {{ occasion.event_date|date:"d.m.Y" }}
-                </time>
+            <a class="list-group-item list-group-item-action event-row"
+               href="{% url 'occasions:detail' occasion.id %}">
+                <span><strong>{{ occasion.name|default:"Без названия" }}</strong>
+                    <small>{{ occasion.recipient_name }}</small></span>
+                <time datetime="{{ occasion.event_date }}">{{ occasion.event_date }}</time>
             </a>
         {% empty %}
             <div class="list-group-item empty-state">События не найдены.</div>

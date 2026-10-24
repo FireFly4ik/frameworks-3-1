@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Подарки по бюджету — GiftList{% endblock %}
+
+{% block content %}
+<div class="section-heading">
+    <div>
+        <span class="eyebrow">SQL: параметризованный WHERE</span>
+        <h1>Подарки по бюджету</h1>
+        <p class="text-secondary mb-0">Найдите идеи, которые укладываются в сумму.</p>
+    </div>
+</div>
+<form method="get" class="filter-form content-card mb-4">
+    <label for="max-price" class="form-label fw-bold">Максимальная цена</label>
+    <div class="input-group">
+        <input
+            id="max-price"
+            name="max_price"
+            type="number"
+            min="1"
+            value="{{ raw_max_price }}"
+            class="form-control"
+        >
+        <button class="btn btn-primary" type="submit">Найти</button>
+    </div>
+    {% if error %}<p class="text-danger mt-2 mb-0">{{ error }}</p>{% endif %}
+</form>
+{% if not error %}
+    <p class="text-secondary">Найдено до {{ max_price }} ₽: {{ gifts|length }}</p>
+    <div class="gift-grid">
+        {% for gift in gifts %}
+            {% include "gifts/includes/gift_card.html" %}
+        {% empty %}
+            <div class="empty-state">Подходящие подарки не найдены.</div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

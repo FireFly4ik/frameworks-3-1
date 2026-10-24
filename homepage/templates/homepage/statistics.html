@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика — GiftList{% endblock %}
+
+{% block content %}
+<div class="section-heading">
+    <div>
+        <span class="eyebrow">SQL: агрегаты и GROUP BY</span>
+        <h1>Статистика подарков</h1>
+        <p class="text-secondary mb-0">Данные рассчитаны непосредственно в SQLite.</p>
+    </div>
+</div>
+<section class="row g-3 mb-5" aria-label="Общая статистика">
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ summary.gifts_count }}</div><div>всего подарков</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ summary.total_price }}</div><div>рублей всего</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ summary.purchased_count }}</div><div>уже куплено</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card stat-card h-100"><div class="card-body">
+        <div class="stat-value">{{ summary.purchased_total }}</div><div>рублей потрачено</div>
+    </div></div></div>
+</section>
+<div class="table-responsive content-card">
+    <table class="table table-hover align-middle mb-0">
+        <thead><tr>
+            <th>Получатель</th><th>Подарков</th><th>Куплено</th><th>Бюджет</th>
+        </tr></thead>
+        <tbody>
+        {% for recipient in recipient_statistics %}
+            <tr>
+                <td><a href="{% url 'recipients:detail' recipient.id %}">
+                    {{ recipient.name }}
+                </a></td>
+                <td>{{ recipient.gifts_count }}</td>
+                <td>{{ recipient.purchased_count }}</td>
+                <td>{{ recipient.total_price }} ₽</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4" class="text-center py-4">Данные отсутствуют.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
