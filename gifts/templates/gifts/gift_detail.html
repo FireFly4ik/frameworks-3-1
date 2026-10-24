@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if gift %}{{ gift.name }} — GiftList{% else %}Подарок не найден — GiftList{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if gift %}
+    <article class="detail-card">
+        <div class="d-flex justify-content-between gap-3 align-items-start">
+            <div>
+                <span class="eyebrow">Подарок #{{ gift.id }}</span>
+                <h1>{{ gift.name|default:"Без названия" }}</h1>
+            </div>
+            {% include "gifts/includes/gift_status.html" %}
+        </div>
+        <dl class="detail-list">
+            <div><dt>Цена</dt><dd>{{ gift.price }} ₽</dd></div>
+            <div>
+                <dt>Получатель</dt>
+                <dd><a href="{% url 'recipients:detail' gift.occasion.recipient.id %}">
+                    {{ gift.occasion.recipient.name }}
+                </a></dd>
+            </div>
+            <div>
+                <dt>Событие</dt>
+                <dd><a href="{% url 'occasions:detail' gift.occasion.id %}">
+                    {{ gift.occasion.name }}
+                </a></dd>
+            </div>
+            <div><dt>Дата</dt><dd>{{ gift.occasion.event_date|date:"d.m.Y" }}</dd></div>
+        </dl>
+    </article>
+{% else %}
+    <section class="empty-state">
+        <h1 class="text-danger">Подарок не найден</h1>
+        <p>Подарка с таким идентификатором нет в списке.</p>
+    </section>
+{% endif %}
+<a href="{% url 'gifts:list' %}" class="btn btn-outline-secondary mt-3">
+    ← К подаркам
+</a>
+{% endblock %}

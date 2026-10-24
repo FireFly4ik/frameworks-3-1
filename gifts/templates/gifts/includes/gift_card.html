@@ -1,0 +1,19 @@
+<article class="card gift-card h-100">
+    <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between gap-3 mb-3">
+            <span class="gift-icon" aria-hidden="true">🎁</span>
+            {% include "gifts/includes/gift_status.html" %}
+        </div>
+        <h2 class="h5">{{ gift.name|default:"Без названия" }}</h2>
+        <p class="gift-meta mb-1">{{ gift.occasion.recipient.name }}</p>
+        <p class="gift-meta">
+            {{ gift.occasion.name }} · {{ gift.occasion.event_date|date:"d.m.Y" }}
+        </p>
+        <div class="mt-auto d-flex justify-content-between align-items-center">
+            <strong class="gift-price">{{ gift.price }} ₽</strong>
+            <a href="{% url 'gifts:detail' gift.id %}" class="btn btn-primary">
+                Подробнее
+            </a>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}GiftList — события{% endblock %}
+
+{% block content %}
+<div class="section-heading">
+    <div>
+        <span class="eyebrow">Календарь</span>
+        <h1>События</h1>
+        <p class="text-secondary mb-0">Поводы, к которым готовятся подарки.</p>
+    </div>
+    <span class="count-badge">Всего: {{ occasions|length }}</span>
+</div>
+<div class="list-group shadow-sm">
+    {% for occasion in occasions %}
+        {% include "occasions/includes/occasion_card.html" %}
+    {% empty %}
+        <div class="list-group-item empty-state">События не найдены.</div>
+    {% endfor %}
+</div>
+{% endblock %}

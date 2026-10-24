@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Страница не найдена — GiftList{% endblock %}
+
+{% block content %}
+<section class="empty-state text-center">
+    <div class="display-1 fw-bold text-danger">404</div>
+    <h1 class="h2">Страница не найдена</h1>
+    <p class="text-secondary">Проверьте адрес или вернитесь на главную.</p>
+    <a href="{% url 'homepage:index' %}" class="btn btn-primary">
+        На главную
+    </a>
+</section>
+{% endblock %}

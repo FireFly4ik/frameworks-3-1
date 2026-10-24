@@ -1,0 +1,7 @@
+{% if gift.purchased %}
+    <span class="badge bg-success gift-status gift-status-purchased">Куплен</span>
+{% else %}
+    <span class="badge bg-warning text-dark gift-status gift-status-planned">
+        Запланирован
+    </span>
+{% endif %}

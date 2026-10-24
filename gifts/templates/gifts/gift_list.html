@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}GiftList — подарки{% endblock %}
+
+{% block content %}
+<div class="section-heading">
+    <div>
+        <span class="eyebrow">{{ gift_list.name|default:"Основной список" }}</span>
+        <h1>Подарки</h1>
+        <p class="text-secondary mb-0">Данные загружены из data/gifts.json.</p>
+    </div>
+    <span class="count-badge">Всего: {{ gifts|length }}</span>
+</div>
+
+<div class="gift-grid">
+    {% for gift in gifts %}
+        {% include "gifts/includes/gift_card.html" %}
+    {% empty %}
+        <div class="empty-state">Подарки не найдены.</div>
+    {% endfor %}
+</div>
+{% endblock %}

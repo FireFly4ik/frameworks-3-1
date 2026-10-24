@@ -1,0 +1,18 @@
+<nav class="site-navigation" aria-label="Основная навигация">
+    <a
+        class="nav-link{% if request.resolver_match.app_name == 'homepage' %} active{% endif %}"
+        href="{% url 'homepage:index' %}"
+    >Главная</a>
+    <a
+        class="nav-link{% if request.resolver_match.app_name == 'gifts' %} active{% endif %}"
+        href="{% url 'gifts:list' %}"
+    >Подарки</a>
+    <a
+        class="nav-link{% if request.resolver_match.app_name == 'recipients' %} active{% endif %}"
+        href="{% url 'recipients:list' %}"
+    >Получатели</a>
+    <a
+        class="nav-link{% if request.resolver_match.app_name == 'occasions' %} active{% endif %}"
+        href="{% url 'occasions:list' %}"
+    >События</a>
+</nav>

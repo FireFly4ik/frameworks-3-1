@@ -1,0 +1,12 @@
+<a
+    class="list-group-item list-group-item-action event-row"
+    href="{% url 'occasions:detail' occasion.id %}"
+>
+    <span>
+        <strong>{{ occasion.name|default:"Без названия" }}</strong>
+        <small>{{ occasion.recipient.name }}</small>
+    </span>
+    <time datetime="{{ occasion.event_date|date:'Y-m-d' }}">
+        {{ occasion.event_date|date:"d.m.Y" }}
+    </time>
+</a>

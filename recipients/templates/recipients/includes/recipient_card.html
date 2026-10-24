@@ -1,0 +1,16 @@
+<div class="col-md-6">
+    <article class="card recipient-card h-100">
+        <div class="card-body">
+            <span class="recipient-avatar" aria-hidden="true">
+                {{ card.recipient.name|first|upper }}
+            </span>
+            <h2 class="h5 mt-3">{{ card.recipient.name|default:"Без имени" }}</h2>
+            <p class="mb-1">Подарков: {{ card.gift_count }}</p>
+            <p class="text-secondary">Бюджет: {{ card.total_price }} ₽</p>
+            <a
+                href="{% url 'recipients:detail' card.recipient.id %}"
+                class="btn btn-outline-primary"
+            >Подробнее</a>
+        </div>
+    </article>
+</div>
