@@ -75,3 +75,17 @@ def test_add_gift_rejects_past_date():
             date.today() - timedelta(days=1),
             1000,
         )
+
+
+def test_find_entities_by_id() -> None:
+    """Связанные сущности находятся по ID для динамических URL."""
+    gift_list, gift, _ = make_gift_list()
+
+    assert gift_list.find_gift_by_id(gift.id) is gift
+    assert gift_list.find_recipient_by_id(gift.occasion.recipient.id) is (
+        gift.occasion.recipient
+    )
+    assert gift_list.find_occasion_by_id(gift.occasion.id) is gift.occasion
+    assert gift_list.find_gift_by_id(999) is None
+    assert gift_list.find_recipient_by_id(999) is None
+    assert gift_list.find_occasion_by_id(999) is None
